@@ -385,8 +385,8 @@ html, body {
 .cover-logo {
   position: absolute;
   /* 透過 top 和 right 調整 LOGO 在框框內的右上角位置 */
-  top: 55px;    /* 距離框框頂部的距離 */
-  right: 53px;  /* 距離框框右側的距離 */
+  top: 60px;    /* 距離框框頂部的距離 */
+  right: 60px;  /* 距離框框右側的距離 */
   
   /* 控制 LOGO 圖片的大小，您可以根據實際圖片比例微調 */
   width: 70px;  
@@ -525,3 +525,4 @@ html, body {
 }
 
 </style>
+
