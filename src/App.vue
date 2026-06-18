@@ -15,6 +15,11 @@
       </svg>
     </button>
 
+    <button class="leave-btn" @click="handleLeave" title="關閉">
+      <svg viewBox="0 0 24 24" class="leave-icon">
+        <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
     
     <!-- 精靈封面區 -->
     <div class="cover-wrapper" :class="{ 'is-playing': isPlaying }">
@@ -190,6 +195,16 @@ const toggleBgm = () => {
   isBgmPlaying.value = !isBgmPlaying.value
 }
 
+const handleLeave = () => {
+  // 首選：嘗試退回上一頁
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    // 備案：如果沒有上一頁 (例如是直接貼網址進來的)，嘗試關閉視窗
+    window.close()
+  }
+}
+
 // --- 控制主語音邏輯 ---
 const togglePlay = () => {
   if (!audioRef.value) return
@@ -339,6 +354,40 @@ html, body {
 .bgm-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
+}
+
+/* 離開按鈕樣式 (左上角) */
+.leave-btn {
+  position: absolute;
+  top: -20px; /* 與 BGM 按鈕保持相同高度 */
+  left: 20px; /* 貼齊左邊 */
+
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  
+  /* 🌟🌟🌟 請注意！一定要把下面這兩個顏色，改成與目前動物的 BGM 按鈕相同！ 🌟🌟🌟 */
+  border: 1px solid rgba(44, 51, 25, 0.2); /* 👈 替換這裡的 rgba */
+  color: #2c3319; /* 👈 替換這裡的 hex 色碼 */
+  
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.leave-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.leave-icon {
+  width: 18px;
+  height: 18px;
 }
 
 .bgm-icon {
