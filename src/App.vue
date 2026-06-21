@@ -113,6 +113,7 @@ onMounted(() => {
   if (bgmRef.value) {
     bgmRef.value.volume = 0.1;
   }
+document.addEventListener('visibilitychange', handleVisibilityChange)
 })
 
 // --- Web Audio API 變數 ---
@@ -205,6 +206,28 @@ const handleLeave = () => {
   }
 }
 
+// --- 監聽分頁切換 (Page Visibility) 邏輯 ---
+const handleVisibilityChange = () => {
+  // 1. 處理 BGM 背景音樂
+  if (bgmRef.value) {
+    if (document.hidden) {
+      // 切換到手機背景或另一個分頁時：強制暫停音樂
+      bgmRef.value.pause()
+    } else {
+      // 回到目前的語錄網頁時：如果原本是開啟狀態，就自動恢復播放
+      if (isBgmPlaying.value) {
+        bgmRef.value.play().catch(e => console.warn('自動恢復 BGM 失敗：', e))
+      }
+    }
+  }
+
+  // 2. 順便處理主語音：如果切出畫面時精靈正在講話，就自動幫他暫停
+  if (document.hidden && isPlaying.value && audioRef.value) {
+    audioRef.value.pause()
+    isPlaying.value = false // 讓播放按鈕變回三角形
+  }
+}
+
 // --- 控制主語音邏輯 ---
 const togglePlay = () => {
   if (!audioRef.value) return
@@ -271,6 +294,7 @@ const handleImageError = (e) => {
 onBeforeUnmount(() => {
   if (animationId) cancelAnimationFrame(animationId)
   if (audioContext) audioContext.close()
+document.removeEventListener('visibilitychange', handleVisibilityChange)
 })
 </script>
 
